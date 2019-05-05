@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ProductServiceService"
+	targetNamespace="http://service.radiantsage.com"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:rs="http://service.radiantsage.com"
+	xmlns:model="http://model.radiantsage.com"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	<wsdl:types>
+		<xs:schema xmlns:model="http://model.radiantsage.com"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://service.radiantsage.com" version="1.0">
+			<xs:import namespace="http://model.radiantsage.com" />
+			<xs:element name="product" type="model:Product" />
+		</xs:schema>
+		<xs:schema xmlns="http://model.radiantsage.com"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			attributeFormDefault="unqualified" elementFormDefault="unqualified"
+			targetNamespace="http://model.radiantsage.com">
+			<xs:complexType name="Product">
+				<xs:sequence>
+					<xs:element name="id" type="xs:long" />
+					<xs:element name="name" type="xs:string" />
+					<xs:element name="price" type="xs:float" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ProductSoapIn" nillable="true"
+				type="Product" />
+			<xs:element name="ProductSoapOut" nillable="true"
+				type="Product" />
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="registerProduct">
+		<wsdl:part name="product" element="model:ProductSoapIn">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="registerProductResponse">
+		<wsdl:part name="parameters" element="model:ProductSoapOut">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ProductService">
+		<wsdl:operation name="registerProduct">
+			<wsdl:input name="registerProduct"
+				message="rs:registerProduct">
+			</wsdl:input>
+			<wsdl:output name="registerProductResponse"
+				message="rs:registerProductResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ProductServiceSoapBinding"
+		type="rs:ProductService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="registerProduct">
+			<soap:operation
+				soapAction="http://service.radiantsage.com/registerProduct"
+				style="document" />
+			<wsdl:input name="registerProduct">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="registerProductResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ProductServiceService">
+		<wsdl:port name="ProductServicePort"
+			binding="rs:ProductServiceSoapBinding">
+			<soap:address
+				location="http://localhost:9090/ProductServicePort" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

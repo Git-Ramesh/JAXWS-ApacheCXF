@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions
+	xmlns:rs="http://service.radiantsage.com"
+	xmlns:model="http://model.radiantsage.com"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" name="product"
+	targetNamespace="http://service.radiantsage.com">
+	<wsdl:types>
+		<xs:schema targetNamespace="http://model.radiantsage.com"
+			elementFormDefault="qualified">
+			<xs:complexType name="product">
+				<xs:sequence>
+					<xs:element name="id" type="xs:long" minOccurs="1"
+						maxOccurs="1" />
+					<xs:element name="name" type="xs:string" minOccurs="1"
+						maxOccurs="1" />
+					<xs:element name="price" type="xs:double" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ProductSoapIn" type="model:product" />
+			<xs:element name="ProductSoapOut" type="model:product" />
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="RegisterProductRequest">
+		<wsdl:part element="model:ProductSoapIn" name="product" />
+	</wsdl:message>
+	<wsdl:message name="RegisterProductResponse">
+		<wsdl:part element="model:ProductSoapOut" name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="ProductService">
+		<wsdl:operation name="registerProduct">
+			<wsdl:input message="rs:RegisterProductRequest" />
+			<wsdl:output message="rs:RegisterProductResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ProductServiceSoapBinding"
+		type="rs:ProductService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="registerProduct">
+			<soap:operation
+				soapAction="http://service.radiantsage.com/registerProduct" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ProductService">
+		<wsdl:port binding="rs:ProductServiceSoapBinding"
+			name="ProductServiceSoapBinding">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
